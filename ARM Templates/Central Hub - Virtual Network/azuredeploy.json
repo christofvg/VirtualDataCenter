@@ -1,0 +1,111 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vNetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the Virtual Network."
+            }
+        },
+        "vNetAddressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Address prefix for the Virtual Network in CIDR notation (e.g. 10.0.1.0/24)."
+            }
+        },
+        "gatewaySubnetName": {
+            "type": "string",
+            "defaultValue": "GatewaySubnet",
+            "metadata": {
+                "description": "Name for the Gateway Subnet, defaulted as it is not allowed to name it differently. Added as parameter for consistency in code."
+            }
+        },
+        "gatewaySubnetPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Address prefix for the Gateway Subnet in CIDR notation (e.g. 10.0.1.0/24)."
+            }
+        },
+        "firewallSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the Firewall Subnet."
+            }
+        },
+        "firewallSubnetPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Address prefix for the Firewall Subnet in CIDR notation (e.g. 10.0.1.0/24)."
+            }
+        },
+        "managementSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the Management Subnet."
+            }
+        },
+        "managementSubnetPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Address prefix for the Management Subnet in CIDR notation (e.g. 10.0.1.0/24)."
+            }
+        },
+        "owner": {
+            "type": "string",
+            "metadata": {
+                "description": "Project owner."
+            }
+        },
+        "project": {
+            "type": "string",
+            "metadata": {
+                "description": "Project name."
+            }
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('vNetName')]",
+            "apiVersion": "2018-10-01",
+            "location": "[variables('location')]",
+            "comments": "Virtual Network for the Central Hub.",
+            "tags": {
+                "Owner": "[parameters('owner')]",
+                "Project": "[parameters('project')]"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('vNetAddressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('gatewaySubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('gatewaySubnetPrefix')]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('firewallSubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('firewallSubnetPrefix')]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('managementSubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('managementSubnetPrefix')]"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {}
+}

@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vNetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the Virtual Network."
+            }
+        },
+        "vNetAddressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Address prefix for the Virtual Network in CIDR notation (e.g. 10.0.1.0/24)."
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the Spoke Subnet."
+            }
+        },
+        "subnetPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Address prefix for the Spoke Subnet in CIDR notation (e.g. 10.0.1.0/24)."
+            }
+        },
+        "owner": {
+            "type": "string",
+            "metadata": {
+                "description": "Project owner."
+            }
+        },
+        "project": {
+            "type": "string",
+            "metadata": {
+                "description": "Project name."
+            }
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('vNetName')]",
+            "apiVersion": "2018-10-01",
+            "location": "[variables('location')]",
+            "comments": "Virtual Network for the Central Hub.",
+            "tags": {
+                "Owner": "[parameters('owner')]",
+                "Project": "[parameters('project')]"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('vNetAddressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnetPrefix')]"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {}
+}

@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vNetName": {
+            "value": "hubvnet"
+        },
+        "vNetAddressPrefix": {
+            "value": "10.1.0.0/16"
+        },
+        "gatewaySubnetPrefix": {
+            "value": "10.1.0.0/24"
+        },
+        "firewallSubnetName": {
+            "value": "firewallsubnet"
+        },
+        "firewallSubnetPrefix": {
+            "value": "10.1.1.0/24"
+        },
+        "managementSubnetName": {
+            "value": "managementsubnet"
+        },
+        "managementSubnetPrefix": {
+            "value": "10.1.2.0/24"
+        },
+        "owner": {
+            "value": "ChVG"
+        },
+        "project": {
+            "value": "VirtualDatacenter"
+        }
+    }
+}
